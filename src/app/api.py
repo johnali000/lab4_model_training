@@ -4,6 +4,7 @@ import numpy as np
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import json
 
 # Explicit request schema for Iris dataset (4 features)
 class IrisRequest(BaseModel):
