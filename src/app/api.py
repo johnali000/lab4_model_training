@@ -54,6 +54,18 @@ def create_app(model_path: str = "models/iris_model.pkl"):
             # Surface any shape/validation issues as a 400 instead of a 500
             raise HTTPException(status_code=400, detail=str(e))
         return {"prediction": target_names[idx], "class_index": idx}
+    @app.get("/model/info")
+    def get_model_info():
+        metadata_path = Path('model/metadata.json')
+        if not metadata_path.exists():
+            raise HTTPException(status_code=404, detail='metadata.json not found')
+
+        try:
+            with metadata_path.open('r') as f:
+                metadata = json.load(f)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f'error reading metadata.json: {e}')
+        return metadata
 
     # return the FastAPI app
     return app
